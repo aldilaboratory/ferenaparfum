@@ -38,6 +38,7 @@
                                 <th class="border-bottom-0">Kode Barang Keluar</th>
                                 <th class="border-bottom-0">Kode Barang</th>
                                 <th class="border-bottom-0">Barang</th>
+                                <th class="border-bottom-0">Harga Barang</th>
                                 <th class="border-bottom-0">Jumlah Keluar</th>
                                 <th class="border-bottom-0">Tujuan</th>
                                 <th class="border-bottom-0" width="1%">Action</th>
@@ -143,6 +144,10 @@
                     {
                         data: 'barang',
                         name: 'barang_nama',
+                    },
+                    {
+                        data: 'harga',
+                        name: 'harga_barang',
                     },
                     {
                         data: 'bk_jumlah',

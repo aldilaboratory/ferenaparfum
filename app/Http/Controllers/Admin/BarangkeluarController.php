@@ -41,6 +41,13 @@ class BarangkeluarController extends Controller
 
                     return $barang;
                 })
+                ->addColumn('harga', function ($row) {
+                    if ($row->barang_id == '') {
+                        return '-';
+                    }
+
+                    return 'Rp ' . number_format($row->barang_harga, 0, ',', '.');
+                })
                 ->addColumn('action', function ($row) {
                     $array = array(
                         "bk_id" => $row->bk_id,
@@ -57,7 +64,6 @@ class BarangkeluarController extends Controller
                         $button .= '
                         <div class="g-2">
                         <a class="btn modal-effect text-primary btn-sm" data-bs-effect="effect-super-scaled" data-bs-toggle="modal" href="#Umodaldemo8" data-bs-toggle="tooltip" data-bs-original-title="Edit" onclick=update(' . json_encode($array) . ')><span class="fe fe-edit text-success fs-14"></span></a>
-                        <a class="btn modal-effect text-danger btn-sm" data-bs-effect="effect-super-scaled" data-bs-toggle="modal" href="#Hmodaldemo8" onclick=hapus(' . json_encode($array) . ')><span class="fe fe-trash-2 fs-14"></span></a>
                         </div>
                         ';
                     } else if ($hakEdit > 0 && $hakDelete == 0) {
@@ -77,7 +83,7 @@ class BarangkeluarController extends Controller
                     }
                     return $button;
                 })
-                ->rawColumns(['action', 'tgl', 'tujuan', 'barang'])->make(true);
+                ->rawColumns(['action', 'tgl', 'tujuan', 'barang', 'harga'])->make(true);
         }
     }
 

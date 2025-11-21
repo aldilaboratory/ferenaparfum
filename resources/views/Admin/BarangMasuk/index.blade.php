@@ -37,6 +37,7 @@
                             <th class="border-bottom-0">Kode Barang</th>
                             <th class="border-bottom-0">Supplier</th>
                             <th class="border-bottom-0">Barang</th>
+                            <th class="border-bottom-0">Harga Barang</th>
                             <th class="border-bottom-0">Jumlah Masuk</th>
                             <th class="border-bottom-0" width="1%">Action</th>
                         </thead>
@@ -145,6 +146,10 @@
                 {
                     data: 'barang',
                     name: 'barang_nama',
+                },
+                {
+                    data: 'harga',
+                    name: 'barang_harga',
                 },
                 {
                     data: 'bm_jumlah',
