@@ -4,46 +4,46 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\AksesModel;
-use App\Models\Admin\CustomerModel;
+use App\Models\Admin\SupplierModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
-class CustomerController extends Controller
+class SupplierController extends Controller
 {
     public function index()
     {
-        $data["title"] = "Customer";
-        $data["hakTambah"] = AksesModel::leftJoin('tbl_menu', 'tbl_menu.menu_id', '=', 'tbl_akses.menu_id')->where(array('tbl_akses.role_id' => Session::get('user')->role_id, 'tbl_menu.menu_judul' => 'Customer', 'tbl_akses.akses_type' => 'create'))->count();
-        return view('Admin.Customer.index', $data);
+        $data["title"] = "Supplier";
+        $data["hakTambah"] = AksesModel::leftJoin('tbl_menu', 'tbl_menu.menu_id', '=', 'tbl_akses.menu_id')->where(array('tbl_akses.role_id' => Session::get('user')->role_id, 'tbl_menu.menu_judul' => 'Supplier', 'tbl_akses.akses_type' => 'create'))->count();
+        return view('Admin.Supplier.index', $data);
     }
 
     public function show(Request $request)
     {
         if ($request->ajax()) {
-            $data = CustomerModel::orderBy('customer_id', 'DESC')->get();
+            $data = SupplierModel::orderBy('supplier_id', 'DESC')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('notelp', function ($row) {
-                    $notelp = $row->customer_notelp == '' ? '-' : $row->customer_notelp;
+                    $notelp = $row->supplier_notelp == '' ? '-' : $row->supplier_notelp;
 
                     return $notelp;
                 })
                 ->addColumn('alamat', function ($row) {
-                    $alamat = $row->customer_alamat == '' ? '-' : $row->customer_alamat;
+                    $alamat = $row->supplier_alamat == '' ? '-' : $row->supplier_alamat;
 
                     return $alamat;
                 })
                 ->addColumn('action', function ($row) {
                     $array = array(
-                        "customer_id" => $row->customer_id,
-                        "customer_nama" => trim(preg_replace('/[^A-Za-z0-9-]+/', '_', $row->customer_nama)),
-                        "customer_alamat" => trim(preg_replace('/[^A-Za-z0-9-]+/', '_', $row->customer_alamat)),
-                        "customer_notelp" => $row->customer_notelp
+                        "supplier_id" => $row->supplier_id,
+                        "supplier_nama" => trim(preg_replace('/[^A-Za-z0-9-]+/', '_', $row->supplier_nama)),
+                        "supplier_alamat" => trim(preg_replace('/[^A-Za-z0-9-]+/', '_', $row->supplier_alamat)),
+                        "supplier_notelp" => $row->supplier_notelp
                     );
                     $button = '';
-                    $hakEdit = AksesModel::leftJoin('tbl_menu', 'tbl_menu.menu_id', '=', 'tbl_akses.menu_id')->where(array('tbl_akses.role_id' => Session::get('user')->role_id, 'tbl_menu.menu_judul' => 'Customer', 'tbl_akses.akses_type' => 'update'))->count();
-                    $hakDelete = AksesModel::leftJoin('tbl_menu', 'tbl_menu.menu_id', '=', 'tbl_akses.menu_id')->where(array('tbl_akses.role_id' => Session::get('user')->role_id, 'tbl_menu.menu_judul' => 'Customer', 'tbl_akses.akses_type' => 'delete'))->count();
+                    $hakEdit = AksesModel::leftJoin('tbl_menu', 'tbl_menu.menu_id', '=', 'tbl_akses.menu_id')->where(array('tbl_akses.role_id' => Session::get('user')->role_id, 'tbl_menu.menu_judul' => 'Supplier', 'tbl_akses.akses_type' => 'update'))->count();
+                    $hakDelete = AksesModel::leftJoin('tbl_menu', 'tbl_menu.menu_id', '=', 'tbl_akses.menu_id')->where(array('tbl_akses.role_id' => Session::get('user')->role_id, 'tbl_menu.menu_judul' => 'Supplier', 'tbl_akses.akses_type' => 'delete'))->count();
                     if ($hakEdit > 0 && $hakDelete > 0) {
                         $button .= '
                         <div class="g-2">
@@ -74,39 +74,39 @@ class CustomerController extends Controller
 
     public function proses_tambah(Request $request)
     {
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->customer)));
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->supplier)));
 
         //insert data
-        CustomerModel::create([
-            'customer_nama' => $request->customer,
-            'customer_slug' => $slug,
-            'customer_notelp'   => $request->notelp,
-            'customer_alamat'   => $request->alamat,
+        SupplierModel::create([
+            'supplier_nama' => $request->supplier,
+            'supplier_slug' => $slug,
+            'supplier_notelp'   => $request->notelp,
+            'supplier_alamat'   => $request->alamat,
         ]);
 
         return response()->json(['success' => 'Berhasil']);
     }
 
-    public function proses_ubah(Request $request, CustomerModel $customer)
+    public function proses_ubah(Request $request, SupplierModel $supplier)
     {
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->customer)));
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->supplier)));
 
         //update data
-        $customer->update([
-            'customer_nama' => $request->customer,
-            'customer_slug' => $slug,
-            'customer_notelp'   => $request->notelp,
-            'customer_alamat'   => $request->alamat,
+        $supplier->update([
+            'supplier_nama' => $request->supplier,
+            'supplier_slug' => $slug,
+            'supplier_notelp'   => $request->notelp,
+            'supplier_alamat'   => $request->alamat,
         ]);
 
         return response()->json(['success' => 'Berhasil']);
     }
 
     
-    public function proses_hapus(Request $request, CustomerModel $customer)
+    public function proses_hapus(Request $request, SupplierModel $supplier)
     {
         //delete
-        $customer->delete();
+        $supplier->delete();
 
         return response()->json(['success' => 'Berhasil']);
     }

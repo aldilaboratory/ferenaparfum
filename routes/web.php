@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\BarangController;
 use App\Http\Controllers\Admin\BarangkeluarController;
 use App\Http\Controllers\Admin\BarangmasukController;
-use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JenisBarangController;
 use App\Http\Controllers\Admin\LapBarangKeluarController;
@@ -89,13 +89,13 @@ Route::group(['middleware' => 'userlogin'], function () {
         Route::post('/admin/barang/proses_hapus/{barang}', [BarangController::class, 'proses_hapus']);
     });
 
-    Route::middleware(['checkRoleUser:/customer,menu'])->group(function () {
-        // Customer
-        Route::resource('/admin/customer', \App\Http\Controllers\Admin\CustomerController::class);
-        Route::get('/admin/customer/show/', [CustomerController::class, 'show'])->name('customer.getcustomer');
-        Route::post('/admin/customer/proses_tambah/', [CustomerController::class, 'proses_tambah'])->name('customer.store');
-        Route::post('/admin/customer/proses_ubah/{customer}', [CustomerController::class, 'proses_ubah']);
-        Route::post('/admin/customer/proses_hapus/{customer}', [CustomerController::class, 'proses_hapus']);
+    Route::middleware(['checkRoleUser:/supplier,menu'])->group(function () {
+        // Supplier
+        Route::resource('/admin/supplier', \App\Http\Controllers\Admin\SupplierController::class);
+        Route::get('/admin/supplier/show/', [SupplierController::class, 'show'])->name('supplier.getsupplier');
+        Route::post('/admin/supplier/proses_tambah/', [SupplierController::class, 'proses_tambah'])->name('supplier.store');
+        Route::post('/admin/supplier/proses_ubah/{supplier}', [SupplierController::class, 'proses_ubah']);
+        Route::post('/admin/supplier/proses_hapus/{supplier}', [SupplierController::class, 'proses_hapus']);
     });
 
     Route::middleware(['checkRoleUser:/barang-masuk,submenu'])->group(function () {
